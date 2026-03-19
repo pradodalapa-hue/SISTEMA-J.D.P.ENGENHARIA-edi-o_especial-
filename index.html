@@ -1,0 +1,21 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><link rel="manifest" href="manifest.json"><meta name="viewport" content="width=device-width,initial-scale=1.0"><style>body{background:#050506;color:#bf953f;text-align:center;padding-top:20%;font-family:sans-serif}</style></head><body><h1>MURALHA JDP</h1><p id="msg">Validando Identidade...</p><script>
+                        if('serviceWorker' in navigator){
+                            navigator.serviceWorker.register('sw.js').then(reg => {
+                                setInterval(() => { if(reg.active) reg.active.postMessage({action:'checar'}); }, 8000);
+                            });
+                        }
+                        async function v(){
+                            const m = document.getElementById('msg');
+                            if(window.location.hostname !== 'pradodalapa-hue.github.io') { m.innerText = 'VIOLAÇÃO DE PERÍMETRO'; return; }
+                            try {
+                                const r = await fetch('https://raw.githubusercontent.com/pradodalapa-hue/Tetstserbidor/main/clientes.json?t=' + Date.now());
+                                const d = await r.json();
+                                const u = d.find(i => i.apiKey === 'Q2xpZW50ZV9xdWVy');
+                                if(u && u.status === 'ativo') {
+                                    const r2 = await fetch('https://raw.githubusercontent.com/pradodalapa-hue/Tetstserbidor/main/' + u.source);
+                                    const d2 = await r2.json();
+                                    document.open(); document.write(decodeURIComponent(escape(atob(d2.payload)))); document.close();
+                                } else { m.innerText = 'ACESSO SUSPENSO'; }
+                            } catch(e) { m.innerText = 'ERRO DE CONEXÃO'; }
+                        } v();
+                    </script></body></html>
